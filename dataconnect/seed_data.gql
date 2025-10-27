@@ -1,0 +1,52 @@
+mutation CreateDemoData @auth(level: PUBLIC, insecureReason: "This operation is for seeding data and does not require authentication") @transaction {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      username: "demouser1",
+      email: "demouser1@example.com",
+      createdAt: "2024-04-26T00:00:00Z"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      username: "demouser2",
+      email: "demouser2@example.com",
+      createdAt: "2024-04-26T00:00:00Z"
+    }
+  ])
+  literatureReview_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440002",
+      authorId: "550e8400-e29b-41d4-a716-446655440000",
+      title: "Example Review 1",
+      abstract: "Example abstract 1",
+      content: "Example content 1",
+      createdAt: "2024-04-26T00:00:00Z",
+      isPublic: true
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440003",
+      authorId: "550e8400-e29b-41d4-a716-446655440001",
+      title: "Example Review 2",
+      abstract: "Example abstract 2",
+      content: "Example content 2",
+      createdAt: "2024-04-26T00:00:00Z",
+      isPublic: false
+    }
+  ])
+  comment_insertMany(data: [
+    {
+      id: "850e8400-e29b-41d4-a716-446655440004",
+      authorId: "550e8400-e29b-41d4-a716-446655440000",
+      literatureReviewId: "650e8400-e29b-41d4-a716-446655440002",
+      content: "Example comment from demouser1",
+      createdAt: "2024-04-26T00:00:00Z"
+    },
+    {
+      id: "950e8400-e29b-41d4-a716-446655440005",
+      authorId: "550e8400-e29b-41d4-a716-446655440001",
+      literatureReviewId: "750e8400-e29b-41d4-a716-446655440003",
+      content: "Example comment from demouser2",
+      createdAt: "2024-04-26T00:00:00Z"
+    }
+  ])
+}

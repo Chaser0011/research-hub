@@ -1,0 +1,78 @@
+mutation CreateLiteratureReview(
+    $authorId: UUID!
+    $abstract: String!
+    $content: String!
+    $fieldOfStudy: String
+    $isPublic: Boolean!
+    $keywords: [String!]
+    $title: String!
+) @auth(level: USER) {
+  literatureReview_insert(
+    data: {
+      authorId: $authorId
+      abstract: $abstract
+      content: $content
+      fieldOfStudy: $fieldOfStudy
+      isPublic: $isPublic
+      keywords: $keywords
+      title: $title
+    }
+  ) {
+    id
+  }
+}
+
+query ListPublicLiteratureReviews @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  literatureReviews(where: {isPublic: {eq: true}}) {
+    id
+    title
+    abstract
+    author {
+      id
+      username
+    }
+  }
+}
+
+mutation CreateComment(
+  $authorId: UUID!
+  $literatureReviewId: UUID!
+  $content: String!
+  $parentCommentId: UUID
+) @auth(level: USER) {
+  comment_insert(
+    data: {
+      authorId: $authorId
+      literatureReviewId: $literatureReviewId
+      content: $content
+      createdAt_expr: "request.time"
+      updatedAt_expr: "request.time"
+      parentCommentId: $parentCommentId
+    }
+  ) {
+    id
+  }
+}
+
+query GetLiteratureReview(
+  $id: UUID!
+) @auth(level: USER) {
+  literatureReview(id: $id) {
+    id
+    title
+    abstract
+    content
+    author {
+      id
+      username
+    }
+    comments_on_literatureReview {
+      id
+      content
+      author {
+        id
+        username
+      }
+    }
+  }
+}
